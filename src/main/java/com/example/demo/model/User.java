@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter @Setter
 @Table(name = "users")  // 테이블 이름을 'users'로 변경
@@ -18,6 +20,8 @@ public class User {
 
     private String username;
     private String password;
+    private LocalDate birth;
+    private Integer age;
 
     // Getters and Setters
 }

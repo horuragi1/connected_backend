@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +35,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<Map<String, String>> register(@RequestParam String username, @RequestParam String password, @RequestParam LocalDate birth ) {
     	
     	Map<String, String> response = new HashMap<>();
     	
@@ -42,7 +44,7 @@ public class UserController {
             return ResponseEntity.status(400).body(response); // 400 bad request
     	}
     	
-        userService.register(username, password);
+        userService.register(username, password, birth);
         
         response.put("message", "회원가입 성공");
         return ResponseEntity.ok(response); // JSON 응답
@@ -54,6 +56,21 @@ public class UserController {
         Map<String, String> response = new HashMap<>();
         
         if (user.isPresent()) {
+            User loggedInUser = user.get();
+
+            // 사용자 생일 가져오기 (생일은 LocalDate로 저장되어 있다고 가정)
+            LocalDate birthDate = loggedInUser.getBirth();
+            LocalDate today = LocalDate.now();
+
+            // 나이 계산
+            int age = userService.calculateAge(birthDate, today);
+
+            // 나이 업데이트 (User 객체에 나이 필드가 있다고 가정)
+            loggedInUser.setAge(age);
+
+            // 사용자 정보 업데이트 (서비스를 통해 DB에 저장)
+            userService.updateUser(loggedInUser);
+
             session.setAttribute("userId", user.get().getId());
             response.put("message", "로그인 성공");
             response.put("status", "success");

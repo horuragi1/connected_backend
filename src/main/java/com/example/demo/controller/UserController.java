@@ -27,6 +27,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")  // 모든 도메인에서의 요청 허용
 public class UserController {
 
     @Autowired

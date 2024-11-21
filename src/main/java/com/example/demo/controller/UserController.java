@@ -58,10 +58,17 @@ public class UserController {
             session.setAttribute("userId", user.get().getId());
             response.put("message", "로그인 성공");
             response.put("status", "success");
+            
+            
+            System.out.println("로그인 성공 "+username+" "+password);
+            
             return ResponseEntity.ok(response); // 로그인 성공 시 JSON 응답
         } else {
             response.put("message", "로그인 실패: 잘못된 사용자명 또는 비밀번호");
             response.put("status", "failure");
+            
+            System.out.println("로그인 실패 "+username+" "+password);
+            
             return ResponseEntity.status(401).body(response); // 로그인 실패 시 401 응답
         }
     }

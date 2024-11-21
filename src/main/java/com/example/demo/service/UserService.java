@@ -11,6 +11,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    public boolean DuplicatUser(String username) {
+    	return userRepository.findByUsername(username).isPresent();
+    }
 
     public User register(String username, String password) {
         User user = new User();

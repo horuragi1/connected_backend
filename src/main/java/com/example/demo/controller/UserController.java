@@ -28,8 +28,16 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestParam String username, @RequestParam String password) {
+    	
+    	Map<String, String> response = new HashMap<>();
+    	
+    	if(userService.DuplicatUser(username)) {
+    		 response.put("message", "이미 존재하는 사용자 이름입니다.");
+            return ResponseEntity.status(400).body(response); // 400 bad request
+    	}
+    	
         userService.register(username, password);
-        Map<String, String> response = new HashMap<>();
+        
         response.put("message", "회원가입 성공");
         return ResponseEntity.ok(response); // JSON 응답
     }

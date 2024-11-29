@@ -45,9 +45,9 @@ public class CommentController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<Map<String, String>> create(@RequestParam Long contentId) {
+    public ResponseEntity<Map<String, String>> create(@RequestParam Long commentId) {
         try {
-            Comment comment = commentService.likeClick(contentId);
+            Comment comment = commentService.likeClick(commentId);
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "댓글 좋아요 성공");

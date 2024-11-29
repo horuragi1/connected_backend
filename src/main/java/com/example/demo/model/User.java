@@ -1,12 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -20,9 +17,8 @@ public class User {
 
     private String username;
     private String password;
-    private LocalDate birth;
-    private Integer age;
+    private LocalDate userbirth;
+    private Integer userage;
 
     // Getters and Setters
 }
-

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,24 +28,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestParam String username, @RequestParam String password, @RequestParam LocalDate birth ) {
-    	
+    public ResponseEntity<Map<String, String>> register(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("userbirth") LocalDate userbirth ) {
+        logger.info("회원가입 요청 - username: {}, password: {}, userbirth: {}", username, password, userbirth);
     	Map<String, String> response = new HashMap<>();
-    	
+
     	if(userService.DuplicatUser(username)) {
     		 response.put("message", "이미 존재하는 사용자 이름입니다.");
             return ResponseEntity.status(400).body(response); // 400 bad request
     	}
     	
-        userService.register(username, password, birth);
+        userService.register(username, password, userbirth);
         
         response.put("message", "회원가입 성공");
         return ResponseEntity.ok(response); // JSON 응답
@@ -59,14 +64,14 @@ public class UserController {
             User loggedInUser = user.get();
 
             // 사용자 생일 가져오기 (생일은 LocalDate로 저장되어 있다고 가정)
-            LocalDate birthDate = loggedInUser.getBirth();
+            //LocalDate birthDate = loggedInUser.getUserbirth();
             LocalDate today = LocalDate.now();
 
             // 나이 계산
-            int age = userService.calculateAge(birthDate, today);
+            //int age = userService.calculateAge(birthDate, today);
 
             // 나이 업데이트 (User 객체에 나이 필드가 있다고 가정)
-            loggedInUser.setAge(age);
+            //loggedInUser.setUserage(loggedInUser.getUserage());
 
             // 사용자 정보 업데이트 (서비스를 통해 DB에 저장)
             userService.updateUser(loggedInUser);

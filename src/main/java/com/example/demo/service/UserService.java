@@ -3,10 +3,13 @@ package com.example.demo.service;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -28,13 +31,15 @@ public class UserService {
         return period.getYears();
     }
 
-    public User register(String username, String password, LocalDate birth) {
+    public User register(String username, String password, LocalDate userbirth) {
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);  // 실제 서비스에서는 비밀번호를 암호화해야 합니다.
-        user.setBirth(birth);
+        user.setUserbirth(userbirth);
+
         LocalDate today = LocalDate.now();
-        user.setAge(calculateAge(birth, today));
+        user.setUserage(calculateAge(userbirth, today));
 
         return userRepository.save(user);
     }

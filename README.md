@@ -18,3 +18,7 @@ curl -X POST "https://connected-backend-yir6.onrender.com/api/logout" -b "JSESSI
 댓글 생성
 
 curl -X POST "https://connected-backend-yir6.onrender.com/api/create" -d "videoId=1&userId=1&content=hello"
+
+댓글 좋아요
+
+curl -X POST "http://localhost:8080/api/like" -d "contentId=2"

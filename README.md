@@ -2,7 +2,7 @@
 
 회원가입
 
-curl -X POST "https://connected-backend-yir6.onrender.com/api/register" -d "username=testuser&password=testpassword"
+curl -X POST "https://connected-backend-yir6.onrender.com/api/register" -d "username=testuser&password=testpassword&userbirth=2001-01-15"
 
 
 로그인

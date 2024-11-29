@@ -43,4 +43,21 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
+    @PostMapping("/like")
+    public ResponseEntity<Map<String, String>> create(@RequestParam Long contentId) {
+        try {
+            Comment comment = commentService.likeClick(contentId);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "댓글 좋아요 성공");
+            response.put("commentId", String.valueOf(comment.getId()));
+
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
 }

@@ -37,4 +37,13 @@ public class CommentService {
 
         return commentRepository.save(comment);
     }
+
+    public Comment likeClick (Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Comment입니다."));
+
+        comment.setLikes(comment.getLikes() + 1); // 좋아요 증가
+
+        return commentRepository.save(comment);
+    }
 }

@@ -21,4 +21,4 @@ curl -X POST "https://connected-backend-yir6.onrender.com/api/create" -d "videoI
 
 댓글 좋아요
 
-curl -X POST "http://localhost:8080/api/like" -d "contentId=2"
+curl -X POST "http://localhost:8080/api/like" -d "commentId=2"

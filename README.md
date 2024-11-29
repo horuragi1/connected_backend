@@ -2,7 +2,7 @@
 
 회원가입
 
-curl -X POST "https://connected-backend-yir6.onrender.com/api/register" -d "username=testuser&password=testpassword"
+curl -X POST "https://connected-backend-yir6.onrender.com/api/register" -d "username=testuser&password=testpassword&userbirth=2001-01-15"
 
 
 로그인
@@ -13,3 +13,8 @@ curl -X POST "https://connected-backend-yir6.onrender.com/api/login" -d "usernam
 로그아웃
 
 curl -X POST "https://connected-backend-yir6.onrender.com/api/logout" -b "JSESSIONID=<your_session_id>"
+
+
+댓글 생성
+
+curl -X POST "https://connected-backend-yir6.onrender.com/api/create" -d "videoId=1&userId=1&content=hello"

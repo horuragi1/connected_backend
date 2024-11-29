@@ -17,12 +17,12 @@ curl -X POST "https://connected-backend-yir6.onrender.com/api/logout" -b "JSESSI
 
 댓글 생성
 
-curl -X POST "https://connected-backend-yir6.onrender.com/api/comment/create" -d "videoId=1&userId=1&content=hello"
+curl -X POST "https://connected-backend-yir6.onrender.com/api/comment/create" -d "videoId={videoId}&userId={userId}&content={content}"
 
 댓글 좋아요
 
-curl -X POST "http://localhost:8080/api/comment/like" -d "commentId=2"
+curl -X POST "http://localhost:8080/api/comment/like" -d "commentId={commentId}"
 
 특정 비디오의 댓글목록
 
-curl -X GET "http://localhost:8080/api/comment/1"
+curl -X GET "http://localhost:8080/api/comment/{videoId}"

@@ -9,6 +9,8 @@ import com.example.demo.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlaylistService {
     @Autowired
@@ -19,6 +21,10 @@ public class PlaylistService {
 
     @Autowired
     private UserRepository userRepository;
+
+    public boolean DuplicateVideo(Long userId, Long videoId) {
+        return playlistRepository.existsByUserIdAndVideoId(userId, videoId);
+    }
 
     public Playlist createPlaylist(Long videoId, Long userId) {
         Video video = videoRepository.findById(videoId)
@@ -34,5 +40,7 @@ public class PlaylistService {
         return playlistRepository.save(playlist);
     }
 
-
+    public List<Playlist> getPlaylistsByUserAndVideoSorted(Long userId, Long videoId) {
+        return playlistRepository.findByUserIdAndVideoIdOrderByIdAsc(userId, videoId);
+    }
 }

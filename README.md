@@ -1,6 +1,7 @@
 # Backend
 
 User
+
 회원가입
 
 curl -X POST "https://connected-backend-yir6.onrender.com/api/register" -d "username=testuser&password=testpassword&userbirth=2001-01-15"
@@ -15,6 +16,7 @@ curl -X POST "https://connected-backend-yir6.onrender.com/api/logout" -b "JSESSI
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Comment
+
 댓글 생성
 
 curl -X POST "https://connected-backend-yir6.onrender.com/api/comment/create" -d "videoId={videoId}&userId={userId}&content={content}"

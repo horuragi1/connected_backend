@@ -7,9 +7,14 @@ import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +52,13 @@ public class CommentService {
         comment.setLikes(comment.getLikes() + 1); // 좋아요 증가
 
         return commentRepository.save(comment);
+    }
+
+    public Page<Comment> getCommentsForVideoSorted(Long videoId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
+
+        // videoId에 해당하는 댓글을 페이지네이션과 함께 조회
+        return commentRepository.findbyPageVideoId(videoId, pageable);
     }
 
     public List<Comment> getCommentsForVideoSorted(Long videoId) {

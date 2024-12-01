@@ -4,12 +4,16 @@ import com.example.demo.model.Comment;
 import com.example.demo.model.User;
 import com.example.demo.model.Video;
 import com.example.demo.service.CommentService;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +63,26 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/comment/{videoId}")
-    public ResponseEntity<List<Comment>> getCommentsForVideoSorted(@PathVariable Long videoId) {
-        List<Comment> comments = commentService.getCommentsForVideoSorted(videoId);
-        return ResponseEntity.ok(comments);
+    @GetMapping("/video/{videoId}")
+    public ResponseEntity<CommentResponse> getCommentsForVideoSorted(
+            @PathVariable Long videoId,
+            @RequestParam(defaultValue = "0") int page, // 기본값 0 (첫 페이지)
+            @RequestParam(defaultValue = "10") int size  // 기본값 10 (한 페이지에 10개 항목)
+    ) {
+        Page<Comment> commentsPage = commentService.getCommentsForVideoSorted(videoId, page, size);
+
+        CommentResponse response = new CommentResponse(
+                commentsPage.getTotalElements(),  // 전체 댓글 수
+                commentsPage.getNumberOfElements(),  // 현재 페이지의 댓글 수
+                commentsPage.getContent()  // 댓글 목록 (마지막에 위치)
+        );
+
+        return ResponseEntity.ok(response);
     }
+
+    public record CommentResponse(
+            long totalComments,  // 전체 댓글 수
+            int cnt,  // 현재 페이지의 댓글 수
+            Object comments  // 댓글 목록
+    ) {}
 }

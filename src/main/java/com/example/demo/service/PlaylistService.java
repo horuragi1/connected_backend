@@ -1,3 +1,4 @@
+/*
 package com.example.demo.service;
 
 import com.example.demo.model.Playlist;
@@ -22,8 +23,9 @@ public class PlaylistService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean DuplicateVideo(Long userId, Long videoId) {
-        return playlistRepository.existsByUserIdAndVideoId(userId, videoId);
+    public boolean DuplicateVideo(Long userId, Long videoId, Long playlistId) {
+        PlaylistKey key = new PlaylistKey(playlistId, userId, videoId);
+        return playlistRepository.existsById(key);
     }
 
     public Playlist createPlaylist(Long videoId, Long userId) {
@@ -33,14 +35,35 @@ public class PlaylistService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 User입니다."));
 
+        PlaylistKey key = new PlaylistKey(playlistId, userId, videoId);
+
         Playlist playlist = new Playlist();
+        playlist.setId(key);
         playlist.setUser(user);
         playlist.setVideo(video);
 
         return playlistRepository.save(playlist);
     }
 
-    public List<Playlist> getPlaylistsByUserAndVideoSorted(Long userId, Long videoId) {
-        return playlistRepository.findByUserIdAndVideoIdOrderByIdAsc(userId, videoId);
+    public Playlist addVideoToPlaylist(Long videoId, Long userId, Long playlistId){
+        Video video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Video입니다."));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 User입니다."));
+
+        PlaylistKey key = new PlaylistKey(playlistId, userId, videoId);
+
+        Playlist playlist = new Playlist();
+        playlist.setId(key);
+        playlist.setUser(user);
+        playlist.setVideo(video);
+
+        return playlistRepository.save(playlist);
+    }
+
+    public List<Playlist> getPlaylistsByUserAndVideoSorted(Long playlistId) {
+        return playlistRepository.findAllByIdOrderByIdAsc(playlistId);
     }
 }
+ */

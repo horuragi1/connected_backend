@@ -32,3 +32,12 @@ curl -X POST "http://localhost:8080/api/comment/dislike" -d "commentId={commentI
 특정 비디오의 댓글목록(pagination)
 
 curl -X GET "http://localhost:8080/api/comment/{videoId}?page={page번호}&size={page당 댓글 수}"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Playlist
+
+playlist 생성
+
+
+playlist 추가
+

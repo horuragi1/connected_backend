@@ -54,6 +54,15 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public Comment dislikeClick (Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Comment입니다."));
+
+        comment.setDislikes(comment.getDislikes() + 1); // 좋아요 증가
+
+        return commentRepository.save(comment);
+    }
+
     public Page<Comment> getCommentsForVideoSorted(Long videoId, int page, int size){
         System.out.println("Fetching page: " + page + " with size: " + size);
 

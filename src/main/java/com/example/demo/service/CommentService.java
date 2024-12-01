@@ -55,6 +55,8 @@ public class CommentService {
     }
 
     public Page<Comment> getCommentsForVideoSorted(Long videoId, int page, int size){
+        System.out.println("Fetching page: " + page + " with size: " + size);
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc("createdAt")));
 
         // videoId에 해당하는 댓글을 페이지네이션과 함께 조회

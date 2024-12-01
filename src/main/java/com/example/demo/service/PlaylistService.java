@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Playlist;
+import com.example.demo.model.PlaylistId;
 import com.example.demo.model.User;
 import com.example.demo.model.Video;
 import com.example.demo.repository.PlaylistRepository;
@@ -38,31 +39,37 @@ public class PlaylistService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 User입니다."));
 
-        // 가장 큰 playlistId를 찾아서 1을 더한 값을 사용
-        Long maxPlaylistId = playlistRepository.findMaxPlaylistId();
-        Long newPlaylistId = (maxPlaylistId != null ? maxPlaylistId : 0) + 1;
-
+        // Playlist 객체를 생성하고 값을 설정합니다.
         Playlist playlist = new Playlist();
-        playlist.setPlaylistId(newPlaylistId);  // 새 playlistId 설정
-        playlist.setUser(user);
         playlist.setVideo(video);
+        playlist.setUser(user);
+        playlist.setPlaylistId(generateNextPlaylistId()); // playlistId는 자동으로 생성하거나 적절히 설정합니다.
 
+        // Playlist 객체를 저장합니다.
         return playlistRepository.save(playlist);
     }
 
-    public Playlist addVideoToPlaylist(Long userId, Long videoId, Long playlistId){
+    private Long generateNextPlaylistId() {
+        Long maxPlaylistId = playlistRepository.findMaxPlaylistId();
+        return maxPlaylistId + 1;
+    }
+
+    public Playlist addVideoToPlaylist(Long userId, Long videoId, Long playlistId) {
+        // Video와 User 객체를 조회합니다.
         Video video = videoRepository.findById(videoId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Video입니다."));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 User입니다."));
 
-        Playlist playlist = new Playlist();
-        playlist.setPlaylistId(playlistId);
-        playlist.setUser(user);
-        playlist.setVideo(video);
+        // 새 Playlist 객체를 생성합니다.
+        Playlist newPlaylist = new Playlist();
+        newPlaylist.setPlaylistId(playlistId);  // 새 Playlist의 ID 설정
+        newPlaylist.setUser(user);  // User 설정
+        newPlaylist.setVideo(video);  // Video 설정
 
-        return playlistRepository.save(playlist);
+        // 새로 생성된 Playlist 객체를 저장합니다.
+        return playlistRepository.save(newPlaylist);
     }
 
     public List<Playlist> getPlaylistsByUserAndVideoSorted(Long playlistId) {

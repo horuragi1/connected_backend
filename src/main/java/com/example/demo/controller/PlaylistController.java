@@ -1,4 +1,3 @@
-/*
 package com.example.demo.controller;
 
 import com.example.demo.model.Comment;
@@ -57,4 +56,3 @@ public class PlaylistController {
         return ResponseEntity.ok(playlists);
     }
 }
-*/

@@ -63,7 +63,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/video/{videoId}")
+    @GetMapping("/comment/{videoId}")
     public ResponseEntity<CommentResponse> getCommentsForVideoSorted(
             @PathVariable Long videoId,
             @RequestParam(defaultValue = "0") int page, // 기본값 0 (첫 페이지)

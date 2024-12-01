@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Optional<Comment> findByVideoId(Long videoId, Pageable pageable);
     Optional<Comment> findByUserId(Long userId);
-    List<Comment> findByVideoIdOrderByCreatedAtAsc(Long videoId);
-    Page<Comment> findbyPageVideoId(Long videoId, Pageable pageable);
+    List<Comment> findByVideo_IdOrderByCreatedAtAsc(Long videoId);
+    Page<Comment> findByVideo_Id(Long videoId, Pageable pageable);
 }

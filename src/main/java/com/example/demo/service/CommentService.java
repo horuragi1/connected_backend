@@ -55,13 +55,9 @@ public class CommentService {
     }
 
     public Page<Comment> getCommentsForVideoSorted(Long videoId, int page, int size){
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc("createdAt")));
 
         // videoId에 해당하는 댓글을 페이지네이션과 함께 조회
-        return commentRepository.findbyPageVideoId(videoId, pageable);
-    }
-
-    public List<Comment> getCommentsForVideoSorted(Long videoId) {
-        return commentRepository.findByVideoIdOrderByCreatedAtAsc(videoId);
+        return commentRepository.findByVideo_Id(videoId, pageable);
     }
 }

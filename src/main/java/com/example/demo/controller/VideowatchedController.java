@@ -30,7 +30,7 @@ public class VideowatchedController {
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "영상 기록 성공");
-            response.put("commentId", String.valueOf(videowatched.getId()));
+            response.put("watchedId", String.valueOf(videowatched.getId()));
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {

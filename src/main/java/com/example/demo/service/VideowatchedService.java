@@ -6,6 +6,7 @@ import com.example.demo.model.Videowatched;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.VideoRepository;
 import com.example.demo.repository.VideowatchedRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class VideowatchedService {
@@ -33,16 +35,26 @@ public class VideowatchedService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 User입니다."));
 
-        Videowatched videowatched = new Videowatched();
+        Optional<Videowatched> existingVideowatched = videowatchedRepository.findByUser_IdAndVideo_Id(userId, videoId);
 
-        videowatched.setUser(user);
-        videowatched.setVideo(video);
-        videowatched.setWatchedTime(watchedTime);
-        videowatched.setWatchedAt(LocalDateTime.now());
+        if (existingVideowatched.isPresent()) {
+            Videowatched videowatched = existingVideowatched.get();
+            videowatched.setWatchedTime(watchedTime);
+            videowatched.setWatchedAt(LocalDateTime.now());
+            return videowatchedRepository.save(videowatched);
+        } else {
+            // 레코드가 없으면 새로운 Videowatched 객체를 생성하여 저장
+            Videowatched videowatched = new Videowatched();
+            videowatched.setUser(user);
+            videowatched.setVideo(video);
+            videowatched.setWatchedTime(watchedTime);
+            videowatched.setWatchedAt(LocalDateTime.now());
 
-        return videowatchedRepository.save(videowatched);
+            return videowatchedRepository.save(videowatched);
+        }
     }
 
+    @Transactional
     public Page<Videowatched> getVideowatched(Long userId, int page, int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("watchedAt")));
 

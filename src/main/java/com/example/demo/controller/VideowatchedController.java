@@ -50,7 +50,7 @@ public class VideowatchedController {
 
         VideowatchedController.VideowatchedResponse response = new VideowatchedController.VideowatchedResponse(
                 videowatchedPage.getTotalElements(),  // 전체 영상 수
-                videowatchedPage.getNumberOfElements(),  // 현재 페이지의 댓글 수
+                videowatchedPage.getNumberOfElements(),  // 현재 페이지의 영상 수
                 videowatchedPage.getContent()  // 영상 목록 (마지막에 위치)
         );
 
@@ -58,8 +58,8 @@ public class VideowatchedController {
     }
 
     public record VideowatchedResponse(
-            long totalVideos,  // 전체 댓글 수
-            int cnt,  // 현재 페이지의 댓글 수
-            Object videos  // 댓글 목록
+            long totalVideos,  // 전체 영상 수
+            int cnt,  // 현재 페이지의 영상 수
+            Object videos  // 영상 목록
     ) {}
 }

@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class PlaylistController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlaylistController.class);
 
     @Autowired
     private PlaylistService playlistService;

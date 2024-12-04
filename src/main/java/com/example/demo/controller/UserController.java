@@ -80,6 +80,7 @@ public class UserController {
             response.put("message", "로그인 성공");
             response.put("status", "success");
             response.put("userId", String.valueOf(user.get().getId()));
+            response.put("username", user.get().getUsername());
             return ResponseEntity.ok(response); // 로그인 성공 시 JSON 응답
         } else {
             response.put("message", "로그인 실패: 잘못된 사용자명 또는 비밀번호");

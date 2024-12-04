@@ -30,14 +30,17 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("comment/create")
-    public ResponseEntity<Map<String, String>> create(@RequestParam Long videoId,
-                                                      @RequestParam Long userId,
+    public ResponseEntity<Map<String, String>> create(@RequestParam String galaxy,
+                                                      @RequestParam String userId,
                                                       @RequestParam String content) {
     	
-    	logger.info("videoId : {}, userId : {}, content : {}", videoId, userId, content);
-    	
+    	logger.info("videoId : {}, userId : {}, content : {}", galaxy, userId, content);
+
+        Long _videoId = Long.parseLong(galaxy);
+        Long _userId = Long.parseLong(userId);
+
         try {
-            Comment comment = commentService.createComment(videoId, userId, content);
+            Comment comment = commentService.createComment(_videoId, _userId, content);
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "댓글 생성 성공");

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -39,6 +40,18 @@ public class VideowatchedController {
             errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
+    }
+
+    @GetMapping("/videowatched/{userId}/{videoId}")
+    public ResponseEntity<Map<String, Long>> getVideoWatchedTime(
+            @PathVariable Long userId,
+            @PathVariable Long videoId
+    ) {
+        Optional<Videowatched> videowatched = videowatchedService.getSpecificVideo(userId, videoId);
+
+        Map<String, Long> response = new HashMap<>();
+        response.put("watchedTime", videowatched.get().getWatchedTime());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/videowatched/{userId}")

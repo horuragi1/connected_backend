@@ -55,6 +55,11 @@ public class VideowatchedService {
     }
 
     @Transactional
+    public Optional<Videowatched> getSpecificVideo(Long userId, Long videoId){
+        return videowatchedRepository.findByUser_IdAndVideo_Id(userId, videoId);
+    }
+
+    @Transactional
     public Page<Videowatched> getVideowatched(Long userId, int page, int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("watchedAt")));
 

@@ -41,3 +41,14 @@ playlist 생성
 
 playlist 추가
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+시청기록
+
+본 영상 기록하기
+
+curl -X POST "http://localhost:8080/api/videowatched/record" -d "videoId=videoId&userId={userId}&watchedTime={watchedTime}"
+
+특정 사용자가 본 영상 목록 출력(pagination)
+
+curl -X GET "http://localhost:8080/api/videowatched/{userId}?page={page번호}&size={page당 영상 수}"
+

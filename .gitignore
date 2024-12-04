@@ -1,0 +1,45 @@
+### Gradle ###
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+
+### Build ###
+build/
+target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+
+### Node.js ###
+node_modules/
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+### Logs ###
+*.log
+
+### Environment Files ###
+.env
+.env.*
+

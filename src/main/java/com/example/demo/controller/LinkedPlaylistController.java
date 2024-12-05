@@ -38,10 +38,10 @@ public class LinkedPlaylistController {
     }
 
     @GetMapping("/playlist/{playlistId}")
-    public ResponseEntity<Optional<LinkedPlaylist>> getPlaylistForService(@PathVariable Long Id){
+    public ResponseEntity<Optional<LinkedPlaylist>> getPlaylistForService(@PathVariable Long playlistId){
         Map<String, String> response = new HashMap<>();
 
-        Optional<LinkedPlaylist> linkedPlaylists = linkedPlaylistService.getLinkedPlaylistsByPlaylistId(Id);
+        Optional<LinkedPlaylist> linkedPlaylists = linkedPlaylistService.getLinkedPlaylistsByPlaylistId(playlistId);
 
         return ResponseEntity.ok(linkedPlaylists);
     }

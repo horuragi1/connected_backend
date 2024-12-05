@@ -48,7 +48,7 @@ public class LinkedPlaylistService {
         return linkedPlaylistRepository.save(linkedPlaylist);
     }
 
-    public Optional<LinkedPlaylist> getLinkedPlaylistsByPlaylistId(Long playlistId) {
+    public List<LinkedPlaylist> getLinkedPlaylistsByPlaylistId(Long playlistId) {
         return linkedPlaylistRepository.findByPlaylist_IdOrderByIdAsc(playlistId);
     }
 }

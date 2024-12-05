@@ -11,5 +11,5 @@ public interface LinkedPlaylistRepository extends JpaRepository<LinkedPlaylist, 
     Optional<LinkedPlaylist> findByPlaylist_IdAndVideo_Id(Long playlistId, Long videoId);
 
     // Playlist의 id와 일치하는 LinkedPlaylist를 id 기준으로 정렬
-    Optional<LinkedPlaylist> findByPlaylist_IdOrderByIdAsc(Long playlistId);
+    List<LinkedPlaylist> findByPlaylist_IdOrderByIdAsc(Long playlistId);
 }

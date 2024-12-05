@@ -21,11 +21,10 @@ public class VideoService {
     	return videoRepository.findTitleById(id);
     }
     
-    public Video registerVideo(String title) {
-    	
-    	Long temp = (long) 30;
+    public Video registerVideo(String title, Long id) {
     	
         Video video = new Video();
+        video.setId(id);
         video.setTitle(title);
         
         // save 메서드를 사용하여 비디오 등록
@@ -39,5 +38,9 @@ public class VideoService {
     	return rtr;
     	
     }
+    
+    /*public Video saveVideo(Video video) {
+        return videoRepository.save(video);  // insert 처리
+    }*/
     
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +42,7 @@ public class VideoController {
     //private static final String VIDEO_DIRECTORY = "/home/gogi/Desktop/connected/demo/src/main/resources/videos/";
     private String VIDEO_DIRECTORY = currentPath + "/src/main/resources/videos/";
 
-    @GetMapping("/video/{filename}")
+    /*@GetMapping("/video/{filename}")
     public ResponseEntity<Resource> getVideo(
             @PathVariable String filename,
             @RequestHeader(value = "Range", required = false) String rangeHeader,
@@ -117,7 +118,7 @@ public class VideoController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .build();
-    }
+    }*/
     
     private String THUMBNAIL_DIRECTORY = currentPath + "/src/main/resources/thumbnails/";
     
@@ -206,6 +207,68 @@ public class VideoController {
     	
     	return ResponseEntity.ok(rtr);
     	
+    }
+    
+    @GetMapping("/hls/{filename}")
+    public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
+        String currentPath = System.getProperty("user.dir");
+        String hlsDirectory = currentPath + "/src/main/resources/videos/hls/";
+        File hlsFile = new File(hlsDirectory + filename);
+        
+        System.out.println("path is " + hlsFile);
+
+        // 파일이 존재하지 않으면 404 반환
+        if (!hlsFile.exists()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // 파일 리소스를 생성하여 반환
+        Resource resource = new FileSystemResource(hlsFile);
+        HttpHeaders headers = new HttpHeaders();
+        if (filename.endsWith(".m3u8")) {
+            headers.setContentType(MediaType.valueOf("application/vnd.apple.mpegurl"));
+        } else if (filename.endsWith(".ts")) {
+            headers.setContentType(MediaType.valueOf("video/mp2t"));
+        }
+        return ResponseEntity.ok().headers(headers).body(resource);
+    }
+    
+    @GetMapping("/video/{filename}")
+    public ResponseEntity<Resource> getVideo(
+            @PathVariable String filename,
+            @RequestHeader(value = "Range", required = false) String rangeHeader) throws IOException {
+    	
+    	System.out.println("pd : " + filename);
+    	
+    	String currentPath = System.getProperty("user.dir");
+        String hlsDirectory = currentPath + "/src/main/resources/videos/";
+    	
+        File videoFile = new File(hlsDirectory + filename);
+        long fileLength = videoFile.length();
+
+        // Range 처리
+        if (rangeHeader != null) {
+            String[] ranges = rangeHeader.replace("bytes=", "").split("-");
+            long start = Long.parseLong(ranges[0]);
+            long end = ranges.length > 1 ? Long.parseLong(ranges[1]) : fileLength - 1;
+            long contentLength = end - start + 1;
+
+            FileInputStream inputStream = new FileInputStream(videoFile);
+            inputStream.skip(start);
+            byte[] buffer = new byte[(int) contentLength];
+            inputStream.read(buffer, 0, buffer.length);
+            inputStream.close();
+
+            return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                    .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                    .header(HttpHeaders.CONTENT_RANGE, "bytes " + start + "-" + end + "/" + fileLength)
+                    .body(new ByteArrayResource(buffer));
+        }
+
+        // 전체 파일 반환
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                .body(new FileSystemResource(videoFile));
     }
     
 

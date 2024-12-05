@@ -24,11 +24,17 @@ public class VideowatchedController {
     private VideowatchedService videowatchedService;
 
     @PostMapping("/videowatched/record")
-    public ResponseEntity<Map<String, String>> record (@RequestParam Long videoId,
-                                                       @RequestParam Long userId,
-                                                       @RequestParam Long watchedTime){
+    public ResponseEntity<Map<String, String>> record (@RequestParam String a,
+                                                       @RequestParam String b,
+                                                       @RequestParam String c){
+
+        logger.info("시청기록 저장 - a: {}, b: {}, c: {}", a, b, c);
+        Long _videoId = Long.parseLong(a);
+        Long _userId = Long.parseLong(b);
+        Long _watchedTime = Long.parseLong(c.split("\\.")[0]);
+
         try {
-            Videowatched videowatched = videowatchedService.record(videoId, userId, watchedTime);
+            Videowatched videowatched = videowatchedService.record(_videoId, _userId, _watchedTime);
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "영상 기록 성공");
@@ -44,10 +50,12 @@ public class VideowatchedController {
 
     @GetMapping("/videowatched/{userId}/{videoId}")
     public ResponseEntity<Map<String, Long>> getVideoWatchedTime(
-            @PathVariable Long userId,
-            @PathVariable Long videoId
+            @PathVariable String userId,
+            @PathVariable String videoId
     ) {
-        Optional<Videowatched> videowatched = videowatchedService.getSpecificVideo(userId, videoId);
+        Long _videoId = Long.parseLong(videoId);
+        Long _userId = Long.parseLong(userId);
+        Optional<Videowatched> videowatched = videowatchedService.getSpecificVideo(_userId, _videoId);
 
         Map<String, Long> response = new HashMap<>();
         response.put("watchedTime", videowatched.get().getWatchedTime());

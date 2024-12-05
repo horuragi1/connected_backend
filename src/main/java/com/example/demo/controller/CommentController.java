@@ -90,11 +90,13 @@ public class CommentController {
 
     @GetMapping("/comment/{videoId}")
     public ResponseEntity<CommentResponse> getCommentsForVideoSorted(
-            @PathVariable Long videoId,
+            @PathVariable String videoId,
             @RequestParam(defaultValue = "0") int page, // 기본값 0 (첫 페이지)
             @RequestParam(defaultValue = "10") int size  // 기본값 10 (한 페이지에 10개 항목)
     ) {
-        Page<Comment> commentsPage = commentService.getCommentsForVideoSorted(videoId, page, size);
+        Long _videoId = Long.parseLong(videoId); // videoId를 Long으로 변환
+
+        Page<Comment> commentsPage = commentService.getCommentsForVideoSorted(_videoId, page, size);
 
         CommentResponse response = new CommentResponse(
                 commentsPage.getTotalElements(),  // 전체 댓글 수

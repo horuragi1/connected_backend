@@ -23,15 +23,18 @@ public class LinkedPlaylistController {
     private LinkedPlaylistService linkedPlaylistService;
 
     @PostMapping("/addPlaylist")
-    public ResponseEntity<Map<String, String>> register(@RequestParam("videoId") Long videoId, @RequestParam("playlistId") Long playlistId) {
+    public ResponseEntity<Map<String, String>> register(@RequestParam("videoId") String videoId, @RequestParam("playlistId") String playlistId) {
         Map<String, String> response = new HashMap<>();
 
-        if (linkedPlaylistService.DuplicateVideo(videoId, playlistId)) {
+        Long _videoId = Long.parseLong(videoId); // videoId를 Long으로 변환
+        Long _playlistId = Long.parseLong(playlistId); // playlistId를 Long으로 변환
+
+        if (linkedPlaylistService.DuplicateVideo(_videoId, _playlistId)) {
             response.put("message", "playlist에 해당 video가 이미 존재합니다.");
             return ResponseEntity.status(400).body(response); // 400 bad request
         }
 
-        linkedPlaylistService.addVideoToPlaylist(videoId, playlistId);
+        linkedPlaylistService.addVideoToPlaylist(_videoId, _playlistId);
 
         response.put("message", "playlist에 video 추가 성공");
         return ResponseEntity.ok(response); // JSON 응답

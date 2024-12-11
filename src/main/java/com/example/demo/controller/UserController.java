@@ -40,14 +40,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("userbirth") LocalDate userbirth ) {
-        logger.info("회원가입 요청 - username: {}, password: {}, userbirth: {}", username, password, userbirth);
+    public ResponseEntity<Map<String, String>> register(@RequestParam("username") String username, @RequestParam("password") String password) {
+        logger.info("회원가입 요청 - username: {}, password: {}", username, password);
     	Map<String, String> response = new HashMap<>();
 
     	if(userService.DuplicatUser(username)) {
     		 response.put("message", "이미 존재하는 사용자 이름입니다.");
             return ResponseEntity.status(400).body(response); // 400 bad request
     	}
+    	
+    	LocalDate userbirth = LocalDate.now();
     	
         userService.register(username, password, userbirth);
         

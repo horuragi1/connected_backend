@@ -15,4 +15,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     
     @Query("SELECT MAX(v.id) FROM Video v")
     Long findMaxId();
+
+    @Query("SELECT v.description FROM Video v WHERE v.id = :id")
+    String findDescription(@Param("id") Long id);
 }

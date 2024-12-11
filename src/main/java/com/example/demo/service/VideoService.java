@@ -26,6 +26,7 @@ public class VideoService {
         Video video = new Video();
         video.setId(id);
         video.setTitle(title);
+        video.setDescription(null);
         
         // save 메서드를 사용하여 비디오 등록
         return videoRepository.save(video);
@@ -37,6 +38,10 @@ public class VideoService {
     	
     	return rtr;
     	
+    }
+
+    public String findDescriptionById(Long id){
+        return videoRepository.findDescription(id);
     }
     
     /*public Video saveVideo(Video video) {

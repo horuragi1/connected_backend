@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.example.demo.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
@@ -207,6 +210,13 @@ public class VideoController {
     	
     	return ResponseEntity.ok(rtr);
     	
+    }
+
+    @GetMapping("/description/{videoId}")
+    public ResponseEntity<String> getDescription(@PathVariable Long videoId){
+        String description = videoService.findDescriptionById(videoId);
+
+        return ResponseEntity.ok(description);
     }
     
     @GetMapping("/hls/{filename}")

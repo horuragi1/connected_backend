@@ -58,7 +58,11 @@ public class VideowatchedController {
         Optional<Videowatched> videowatched = videowatchedService.getSpecificVideo(_userId, _videoId);
 
         Map<String, Long> response = new HashMap<>();
-        response.put("watchedTime", videowatched.get().getWatchedTime());
+        if (videowatched.isPresent()) {
+            response.put("watchedTime", videowatched.get().getWatchedTime());
+        } else {
+            response.put("watchedTime", (long)0);
+        }
         return ResponseEntity.ok(response);
     }
 

@@ -13,6 +13,8 @@ public class Video {
     private Long id;
 
     private String title;
+
+    private String description;
     //private String Category;
     //private String videoUrl;
     //private Long duration;
